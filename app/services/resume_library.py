@@ -121,3 +121,56 @@ def delete_resume(user_id: int, entry_id: str) -> dict:
 
     save_manifest(user_id, manifest)
     return {'deleted': deleted_item is not None, 'active_id': manifest.get('active_id')}
+
+
+def activate_resume(user_id: int, entry_id: str) -> dict:
+    manifest = load_manifest(user_id)
+    items = manifest.get('items', [])
+    target = next((item for item in items if item.get('id') == entry_id), None)
+
+    if target is None:
+        return {'activated': False, 'active_id': manifest.get('active_id')}
+
+    manifest['active_id'] = entry_id
+    save_manifest(user_id, manifest)
+    return {'activated': True, 'active_id': entry_id}
+
+
+def get_active_resume(user_id: int) -> dict | None:
+    manifest = load_manifest(user_id)
+    items = manifest.get('items', [])
+    if not items:
+        return None
+
+    active_id = manifest.get('active_id')
+    if active_id:
+        active_item = next((item for item in items if item.get('id') == active_id), None)
+        if active_item is not None:
+            return active_item
+
+    return items[0]
+
+
+def _customization_path(user_id: int) -> Path:
+    return _user_dir(user_id) / 'customization.json'
+
+
+def save_customization(user_id: int, customization: dict) -> None:
+    user_dir = _user_dir(user_id)
+    user_dir.mkdir(parents=True, exist_ok=True)
+    _customization_path(user_id).write_text(json.dumps(customization, indent=2), encoding='utf-8')
+
+
+def load_customization(user_id: int) -> dict:
+    customization_file = _customization_path(user_id)
+    if not customization_file.exists():
+        return {'theme': 'light', 'accent': '#6366f1', 'bubbleStyle': 'rounded', 'showWelcomeMessage': True}
+
+    try:
+        data = json.loads(customization_file.read_text(encoding='utf-8'))
+        if isinstance(data, dict):
+            return data
+    except Exception:
+        pass
+
+    return {'theme': 'light', 'accent': '#6366f1', 'bubbleStyle': 'rounded', 'showWelcomeMessage': True}

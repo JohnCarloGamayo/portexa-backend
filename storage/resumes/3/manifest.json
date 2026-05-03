@@ -1,4 +1,55 @@
 {
-  "active_id": null,
-  "items": []
+  "active_id": "8d16780ffbc447ba9bdc6ffb85ae982a",
+  "items": [
+    {
+      "id": "8d16780ffbc447ba9bdc6ffb85ae982a",
+      "file_name": "gamayo-johncarlo-resume.pdf",
+      "source_type": "application/pdf",
+      "indexed_at": "2026-05-02T05:52:28.702Z",
+      "name": "John Carlo Gamayo",
+      "summary": "Results-driven Full-Stack Software Developer specializing in building AI-embedded systems, SaaS applications, and scalable web platforms. Experienced in designing and deploying intelligent applications using LLMs, RAG, and automation workflows. Proven ability to contribute to system architecture, AI pipelines, API integrations, and business solutions. Recognized for strong ownership, fast learning ability, and a systems-thinking mindset.",
+      "experience": [
+        {
+          "title": "Software Developer Intern",
+          "company": "Lightweight Global Tech Solution Corp",
+          "period": "December 2025 - March 2026"
+        }
+      ],
+      "education": [
+        "Bachelor of Science in Information Technology, Bulacan State University \u2013 Bustos Campus (2022 - 2026)",
+        "ICT Strand, Immaculate Conception School of Sta. Maria, Bulacan (2020 - 2022)"
+      ],
+      "skills": [
+        "JavaScript",
+        "Typescript",
+        "Python",
+        "SQL",
+        "C#",
+        "React",
+        "Node.js",
+        "FastAPI",
+        "Django",
+        "OCR",
+        "LLMs",
+        "RAG",
+        "Embeddings",
+        "Knowledge Bases",
+        "Prompt Engineering",
+        "AI Workflow Design",
+        "REST APIs",
+        "SaaS Development",
+        "Cloudflare",
+        "PostgreSQL",
+        "System Architecture",
+        "API Integration",
+        "Debugging",
+        "Testing",
+        "UI/UX Design"
+      ],
+      "raw_text": "1/2  JOHN CARLO GAMAYO  Full-Stack Software Developer  Bulacan, Philippines   I   +63 911 352 900   I   johncarlogamayo@gmail.com  Portfolio: johncarlogamayo.netlify.app   I   GitHub: github.com/johncarlogamayo  PROFESSIONAL SUMMARY  Results-driven Full-Stack Software Developer specializing in building AI-embedded systems, SaaS applications, and scalable web platforms. Experienced in designing and deploying intelligent applications using LLMs, Retrieval - Augmented Generation (RAG), and automation workflows. Proven ability to go beyond typical development roles by contributing to system architecture, AI pipelines, API integrations, and real-world business solutions. Adept at translating complex technical systems into practical, user-focused applications. Recognized for strong ownership, fast learning ability, and a systems-thinking mindset aligned with modern AI-driven development practices.  TECHNICAL SKILLS  Languages:  Frameworks   &   Libraries:  Web   &   Mobile:  Al   &   Machine learning:  Web & Systems Development:  Cloud & Infrastructure:  Core Competencies:  JavaScript, Typescript, Python, SQL, C#  React, Node.js, FastAPI, Django  REST APls, Webhooks, Android Development, Unity  OCR, LLMs, RAG, Embeddings, Knowledge Bases, Prompt Engineering, AI Workflow Design  REST APIs, Webhooks, SaaS Development, Full-Stack Systems  Cloudflare, Reverse Proxy, PostgreSQL, Environment Configuration System Architecture, API Integration, Debugging, Testing, UI/UX Design  PROFESSIONAL EXPERIENCE  Software Developer Intern  Lightweight Global Tech Solution Corp   /   Quezon City, Philippines December 2025   -   March 2026  \u2022   Developed and maintained full-stack web applications using Typescript, React, Python, FastAPI, and PostgreSQL for internal and client-facing systems  \u2022   Implemented OCR-based document processing pipelines, automating data extraction from scanned and handwritten documents and mapping outputs into structured PDFs  \u2022   Enhanced OCR accuracy through prompt rules, positional logic, and validation to prevent duplicate or incorrect data mapping  \u2022   Integrated Al-powered features including embeddings, Retrieval-Augmented Generation (RAG), and knowledge base workflows  \u2022   Designed and implemented multi-platform messaging integrations (Facebook Messenger, lnstagram DM, WhatsApp) using Meta Graph API and webhook architecture  \u2022   Built secure webhook handlers with HMAC-SHA256 signature validation, environment-based configuration, and structured logging  \u2022   Configured Cloudflare reverse proxy and tunnels for local-to-public webhook testing and production readiness  \u2022   Fixed critical backend and frontend issues across authentication, email verification, API keys management, file uploads, and real-time streaming responses  \u2022   Participated in system architecture discussions, database schema updates, migrations, and deployment preparation  \u2022   Authored technical documentation for integrations, testing workflows, and setup guides for internal developers and future clients  \u2022   Regularly presented development updates to senior leadership, including CTO and CEO, and proposed architectural improvements  PROJECTS  Eveia - Al-Powered Saas Platform   I   Internal Product at Lightweight Global Tech Solution Corp  \u2022   Contributed to the development of an Al-powered Saas platform for document processing, knowledge bases, and business messaging automation  \u2022   Implemented OCR pipelines to extract structured data from scanned and handwritten documents  \u2022   Integrated Retrieval-Augmented Generation (RAG) using embeddings for Al knowledge retrieval  \u2022   Developed and tested secure webhook integrations for Facebook Messenger, lnstagram Direct Messages, and WhatsApp Business  \u2022   Improved backend stability, streaming responses, API key management, and timezone handling  Scholarly Aether   \u2014   AI-Powered Research SaaS Platform  \u2022   Designed and deployed a web-based AI system for researchers with knowledge base creation and intelligent querying  \u2022   Implemented RAG architecture for accurate AI responses based on structured data  \u2022   Built features for data ingestion, document processing, and AI summarization  \u2022   Designed system to be model-agnostic using OpenAI-compatible APIs for scalability and flexibility  DriveWise - Gamified Driving Simulation App   I   Unity,   C#,   Mobile Application  \u2022   Developed a mobile driving simulation game focused on real-world traffic scenarios and road safety  \u2022   Implemented interactive gameplay mechanics, scoring systems, vehicle physics, and user progression  \u2022   Published on Google Play Store with analytics and user feedback integration  3/2  PC Bulacan - E-Commerce System   I   Full-Stack Web Application  \u2022   Built a complete e-commerce platform including product catalog, shopping cart, checkout flow, and role-based authentication  \u2022   Implemented backend order management and payment simulation using RESTful APls  \u2022   Designed database schema and admin workflows for inventory and order tracking  CyberZone - E-Commerce Website   I   UI Design, Backend Development  \u2022   Designed and implemented a modern UI for product management, order tracking, and inventory control  \u2022   Developed secure backend logic for order processing and catalog management  \u2022   Integrated admin dashboards for monitoring orders, products, and stock levels  BigBrew - Online Coffee Management System   I   Web-based Management System  \u2022   Developed an online coffee shop management system with admin dashboard reporting  \u2022   Implemented dynamic pricing, product categorization, and image management features  \u2022   Built CRUD workflows for products, categories, and orders with clean, modern UI  EDUCATION  Bulacan State University   \u2013   Bustos Campus   2022   \u2013   2026  \u2022   Bachelor of Science in Information Technology  Immaculate Conception School of Sta. Maria, Bulacan   2020   \u2013   2022  \u2022   ICT Strand (Senior High School)  ADDITIONAL INFORMATION  \u2022   AI & Machine Learning Practitioner with hands-on experience building real-world systems  \u2022   Experienced in designing AI-integrated applications from concept to deployment  \u2022   Strong focus on secure, scalable, and user-centered system design  REFERENCES  Danward Bautista - Senior Software Developer  \ud83d\udcde   0945 992 2705  \u2709\ufe0f  danwarddeveloper@gmail.com  \ud83c\udf10   danwardbautista.com",
+      "size_bytes": 4044358,
+      "stored_file_name": "8d16780ffbc447ba9bdc6ffb85ae982a_gamayo-johncarlo-resume.pdf",
+      "is_active": true
+    }
+  ]
 }

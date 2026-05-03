@@ -1,6 +1,9 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 
+from app.api.deps import get_current_user
 from app.core.openrouter import OpenRouterError, ask_openrouter
+from app.models.user import User
 from app.schemas.ai import (
     AIChatRequest,
     AIChatResponse,
@@ -8,11 +11,19 @@ from app.schemas.ai import (
     ResumeStructureResponse,
     ResumeExperienceItem,
 )
+from app.services.resume_library import get_active_resume
 
 import json
 import re
 
 router = APIRouter(prefix="/ai", tags=["ai"])
+
+
+class EmbedRAGRequest(BaseModel):
+    message: str
+    portfolio_id: str
+    model: str | None = "openrouter/auto"
+
 
 
 def _extract_json_block(text: str) -> str:
@@ -87,6 +98,63 @@ async def chat(request: AIChatRequest):
     return AIChatResponse(response=result["response"], model=result["model"])
 
 
+@router.post("/rag-chat", response_model=AIChatResponse)
+async def rag_chat(request: AIChatRequest, current_user: User = Depends(get_current_user)):
+    active_source = get_active_resume(current_user.id)
+    if active_source is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No active RAG source found. Confirm a portfolio source first.")
+
+    summary = (active_source.get("summary") or "").strip()
+    skills = ", ".join([str(skill).strip() for skill in active_source.get("skills", []) if str(skill).strip()][:25])
+    experience_lines = []
+    for item in active_source.get("experience", [])[:8]:
+        title = str(item.get("title") or "").strip()
+        company = str(item.get("company") or "").strip()
+        period = str(item.get("period") or "").strip()
+        experience_lines.append(f"- {title} | {company} | {period}".strip(" |"))
+    education_lines = [f"- {str(value).strip()}" for value in active_source.get("education", [])[:8] if str(value).strip()]
+    raw_text = str(active_source.get("raw_text") or "").strip()[:16000]
+
+    source_context = "\n".join([
+        f"Name: {active_source.get('name') or 'Unknown'}",
+        f"Summary: {summary}",
+        f"Skills: {skills}",
+        "Experience:",
+        "\n".join(experience_lines) if experience_lines else "- None",
+        "Education:",
+        "\n".join(education_lines) if education_lines else "- None",
+        "Raw Resume Text (truncated):",
+        raw_text or "No raw text available",
+    ])
+
+    system_prompt = (
+        "You are Portexa AI in strict RAG mode. "
+        "Answer ONLY using the provided source context. "
+        "If the answer is not in the context, respond exactly: 'I cannot find that in your saved RAG source.' "
+        "Do not invent facts, projects, timelines, tools, or claims not present in context. "
+        "Keep responses concise and practical."
+    )
+
+    user_prompt = (
+        f"Source context:\n{source_context}\n\n"
+        f"User question: {request.prompt.strip()}"
+    )
+
+    try:
+        result = await ask_openrouter(
+            user_prompt,
+            model=request.model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+        )
+    except OpenRouterError as error:
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(error)) from error
+
+    return AIChatResponse(response=result["response"], model=result["model"])
+
+
 @router.post("/structure-resume", response_model=ResumeStructureResponse)
 async def structure_resume(request: ResumeStructureRequest):
     system_prompt = (
@@ -124,3 +192,67 @@ async def structure_resume(request: ResumeStructureRequest):
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(error)) from error
     except Exception as error:
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=f"Unable to structure resume: {error}") from error
+
+
+
+    # Backwards-compatible public embed endpoint used by iframe widgets
+    @router.post("/embed-rag-chat", response_model=AIChatResponse)
+    async def embed_rag_chat_public(request: EmbedRAGRequest):
+        try:
+            user_id = int(request.portfolio_id)
+        except (ValueError, TypeError):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid portfolio ID")
+
+        active_source = get_active_resume(user_id)
+        if active_source is None:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No active RAG source found for this portfolio")
+
+        summary = (active_source.get("summary") or "").strip()
+        skills = ", ".join([str(skill).strip() for skill in active_source.get("skills", []) if str(skill).strip()][:25])
+        experience_lines = []
+        for item in active_source.get("experience", [])[:8]:
+            title = str(item.get("title") or "").strip()
+            company = str(item.get("company") or "").strip()
+            period = str(item.get("period") or "").strip()
+            experience_lines.append(f"- {title} | {company} | {period}".strip(" |"))
+        education_lines = [f"- {str(value).strip()}" for value in active_source.get("education", [])[:8] if str(value).strip()]
+        raw_text = str(active_source.get("raw_text") or "").strip()[:16000]
+
+        source_context = "\n".join([
+            f"Name: {active_source.get('name') or 'Unknown'}",
+            f"Summary: {summary}",
+            f"Skills: {skills}",
+            "Experience:",
+            "\n".join(experience_lines) if experience_lines else "- None",
+            "Education:",
+            "\n".join(education_lines) if education_lines else "- None",
+            "Raw Resume Text (truncated):",
+            raw_text or "No raw text available",
+        ])
+
+        system_prompt = (
+            "You are Portexa AI in strict RAG mode. "
+            "Answer ONLY using the provided source context. "
+            "If the answer is not in the context, respond exactly: 'I cannot find that in your saved RAG source.' "
+            "Do not invent facts, projects, timelines, tools, or claims not present in context. "
+            "Keep responses concise and practical."
+        )
+
+        user_prompt = (
+            f"Source context:\n{source_context}\n\n"
+            f"User question: {request.message.strip()}"
+        )
+
+        try:
+            result = await ask_openrouter(
+                user_prompt,
+                model=request.model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+            )
+        except Exception as error:
+            raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(error)) from error
+
+        return AIChatResponse(response=result["response"], model=result.get("model"))
